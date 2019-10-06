@@ -1,4 +1,5 @@
 ﻿using CasaDoCodigo.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,27 +9,27 @@ namespace CasaDoCodigo.Repositories
 {
     public interface IItemPedidoRepository
     {
-        void UpdateQuantidade(ItemPedido itemPedido);
-   
+        Task<ItemPedido> GetItemPedido(int itemPedidoId);
+        Task RemoveItemPedido(int itemPedidoId);
     }
-    public class ItemPedidoRepository : BaseRepository<ItemPedido>, IItemPedidoRepository
 
+    public class ItemPedidoRepository : BaseRepository<ItemPedido>, IItemPedidoRepository
     {
-        public ItemPedidoRepository(ApplicationContext context) : base(context)
+        public ItemPedidoRepository(ApplicationContext contexto) : base(contexto)
         {
         }
 
-        public void UpdateQuantidade(ItemPedido itemPedido)
+        public async Task<ItemPedido> GetItemPedido(int itemPedidoId)
         {
-            var itemPedidoDb =
-            dbSet
-                 .Where(p => p.Id == itemPedido.Id)
-                 .SingleOrDefault();
-            if(itemPedidoDb != null)
-            {
-                itemPedidoDb.AtualizaQuantidade(itemPedido.Quantidade);
-                context.SaveChanges();
-            }
+            return
+                await dbSet
+                .Where(ip => ip.Id == itemPedidoId)
+                .SingleOrDefaultAsync();
+        }
+
+        public async Task RemoveItemPedido(int itemPedidoId)
+        {
+            dbSet.Remove(await GetItemPedido(itemPedidoId));
         }
     }
 }
