@@ -11,8 +11,8 @@ using System;
 namespace CasaDoCodigo.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20190929045351_Modelo")]
-    partial class Modelo
+    [Migration("20191023141328_inicializer")]
+    partial class inicializer
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,7 +45,8 @@ namespace CasaDoCodigo.Migrations
                         .IsRequired();
 
                     b.Property<string>("Nome")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<string>("Telefone")
                         .IsRequired();

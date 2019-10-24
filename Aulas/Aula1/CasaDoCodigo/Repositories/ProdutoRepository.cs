@@ -18,16 +18,20 @@ namespace CasaDoCodigo.Repositories
             return await dbSet.ToListAsync();
         }
 
-        public async Task SaveProdutos(List<Livro> livros)
+        public void SaveProdutos(List<Livro> livros)
         {
+            var produtoValido = dbSet
+                                    .SingleOrDefault();
+
             foreach (var livro in livros)
             {
-                if (!await dbSet.Where(p => p.Codigo == livro.Codigo).AnyAsync())
+                if (produtoValido == null || !  dbSet.Where(p => p.Codigo == livro.Codigo).Any())
                 {
-                    await dbSet.AddAsync(new Produto(livro.Codigo, livro.Nome, livro.Preco));
+                     dbSet.Add(new Produto(livro.Codigo, livro.Nome, livro.Preco));
                 }
             }
-            await contexto.SaveChangesAsync();
+
+             contexto.SaveChanges();
         }
     }
 

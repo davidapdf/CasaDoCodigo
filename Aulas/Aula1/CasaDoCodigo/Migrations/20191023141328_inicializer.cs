@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace CasaDoCodigo.Migrations
 {
-    public partial class Modelo : Migration
+    public partial class inicializer : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,13 +21,28 @@ namespace CasaDoCodigo.Migrations
                     Email = table.Column<string>(nullable: false),
                     Endereco = table.Column<string>(nullable: false),
                     Municipio = table.Column<string>(nullable: false),
-                    Nome = table.Column<string>(nullable: false),
+                    Nome = table.Column<string>(maxLength: 50, nullable: false),
                     Telefone = table.Column<string>(nullable: false),
                     UF = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cadastro", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Produto",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Codigo = table.Column<string>(nullable: false),
+                    Nome = table.Column<string>(nullable: false),
+                    Preco = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Produto", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -101,6 +116,9 @@ namespace CasaDoCodigo.Migrations
 
             migrationBuilder.DropTable(
                 name: "Pedido");
+
+            migrationBuilder.DropTable(
+                name: "Produto");
 
             migrationBuilder.DropTable(
                 name: "Cadastro");
