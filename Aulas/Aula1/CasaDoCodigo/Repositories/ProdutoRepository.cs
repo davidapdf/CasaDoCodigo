@@ -20,19 +20,17 @@ namespace CasaDoCodigo.Repositories
 
         public void SaveProdutos(List<Livro> livros)
         {
-            var produtoValido = dbSet
-                                    .SingleOrDefault();
 
             foreach (var livro in livros)
             {
-                if (produtoValido == null || !  dbSet.Where(p => p.Codigo == livro.Codigo).Any())
+                if (! dbSet.Where(p => p.Codigo == livro.Codigo).Any())
                 {
                      dbSet.Add(new Produto(livro.Codigo, livro.Nome, livro.Preco));
                 }
             }
-
              contexto.SaveChanges();
         }
+        
     }
 
     public class Livro
